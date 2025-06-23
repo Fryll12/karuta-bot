@@ -3,17 +3,14 @@ import threading
 import time
 import os
 from keep_alive import keep_alive
-from dotenv import load_dotenv
-
-load_dotenv()
 
 accounts = [
-    {"token": os.getenv("TOKEN_ACC1"), "channel_id": 1298597108345212938},
-    {"token": os.getenv("TOKEN_ACC2"), "channel_id": 1298597108345212938},
-    {"token": os.getenv("TOKEN_ACC3"), "channel_id": 1298597108345212938},
-    {"token": os.getenv("TOKEN_ACC4"), "channel_id": 1298597108345212938},
-    {"token": os.getenv("TOKEN_ACC5"), "channel_id": 1298597108345212938},
-    {"token": os.getenv("TOKEN_ACC6"), "channel_id": 1298597108345212938},
+    {"token": os.getenv("TOKEN1"), "channel_id": os.getenv("CHANNEL_ID")},
+    {"token": os.getenv("TOKEN2"), "channel_id": os.getenv("CHANNEL_ID")},
+    {"token": os.getenv("TOKEN3"), "channel_id": os.getenv("CHANNEL_ID")},
+    {"token": os.getenv("TOKEN4"), "channel_id": os.getenv("CHANNEL_ID")},
+    {"token": os.getenv("TOKEN5"), "channel_id": os.getenv("CHANNEL_ID")},
+    {"token": os.getenv("TOKEN6"), "channel_id": os.getenv("CHANNEL_ID")},
 ]
 
 karuta_id = "646937666251915264"
