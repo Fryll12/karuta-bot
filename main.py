@@ -60,7 +60,7 @@ def drop_loop():
         except Exception as e:
             print(f"[{acc['channel_id']}] → Drop lỗi: {e}")
         i += 1
-        time.sleep(10)
+        time.sleep(305)
 
 keep_alive()
 
