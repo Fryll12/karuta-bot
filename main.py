@@ -47,28 +47,10 @@ def create_bot(account, emoji):
 
     threading.Thread(target=bot.gateway.run, daemon=True).start()
 
-def drop_loop():
-    acc_count = len(accounts)
-    i = 0
+if __name__ == "__main__":
+    keep_alive()
+    for i, acc in enumerate(accounts):
+        emoji = fixed_emojis[i % len(fixed_emojis)]
+        create_bot(acc, emoji)
     while True:
-        acc = accounts[i % acc_count]
-        try:
-            bot = discum.Client(token=acc["token"], log=False)
-            bot.sendMessage(str(acc["channel_id"]), "k!d")
-            print(f"[{acc['channel_id']}] → Gửi lệnh k!d từ acc thứ {i % acc_count + 1}")
-            bot.gateway.close()
-        except Exception as e:
-            print(f"[{acc['channel_id']}] → Drop lỗi: {e}")
-        i += 1
-        time.sleep(305)
-
-keep_alive()
-
-for i, acc in enumerate(accounts):
-    emoji = fixed_emojis[i % len(fixed_emojis)]
-    create_bot(acc, emoji)
-
-threading.Thread(target=drop_loop, daemon=True).start()
-
-while True:
-    time.sleep(60)
+        time.sleep(60)
