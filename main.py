@@ -14,6 +14,7 @@ accounts = [
 ]
 
 karuta_id = "646937666251915264"
+ktb_channel_id = "1376777071279214662"  # Kênh riêng để nhắn "kt b"
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
 bots = []
@@ -42,8 +43,8 @@ def create_bot(account, emoji):
                     bot.addReaction(msg["channel_id"], msg["id"], emoji)
                     print(f"[{account['channel_id']}] → Thả reaction {emoji}")
                     try:
-                        bot.sendMessage(str(account["channel_id"]), "kt b")
-                        print(f"[{account['channel_id']}] → Nhắn 'kt b' sau khi nhặt")
+                        bot.sendMessage(ktb_channel_id, "kt b")
+                        print(f"[{account['channel_id']}] → Nhắn 'kt b' ở kênh riêng")
                     except Exception as e:
                         print(f"[{account['channel_id']}] → Lỗi nhắn kt b: {e}")
 
@@ -56,7 +57,7 @@ def drop_loop():
     while True:
         acc = accounts[i % acc_count]
         try:
-            bots[i % acc_count].sendMessage(str(acc["channel_id"]), "k!d")
+            bots[i % acc_count].sendMessage(str(acc["channel_id"]), "kd")
             print(f"[{acc['channel_id']}] → Gửi lệnh k!d từ acc thứ {i % acc_count + 1}")
         except Exception as e:
             print(f"[{acc['channel_id']}] → Drop lỗi: {e}")
