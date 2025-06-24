@@ -16,6 +16,8 @@ accounts = [
 karuta_id = "646937666251915264"
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
+bots = []
+
 def create_bot(account, emoji):
     bot = discum.Client(token=account["token"], log=False)
 
@@ -45,6 +47,7 @@ def create_bot(account, emoji):
                     except Exception as e:
                         print(f"[{account['channel_id']}] → Lỗi nhắn kt b: {e}")
 
+    bots.append(bot)
     threading.Thread(target=bot.gateway.run, daemon=True).start()
 
 def drop_loop():
@@ -53,28 +56,20 @@ def drop_loop():
     while True:
         acc = accounts[i % acc_count]
         try:
-            if acc["token"] and acc["channel_id"]:
-                bot = discum.Client(token=acc["token"], log=False)
-                bot.sendMessage(str(acc["channel_id"]), "k!d")
-                print(f"[{acc['channel_id']}] → Gửi lệnh k!d từ acc thứ {i % acc_count + 1}")
-                bot.gateway.close()
-            else:
-                print(f"Bỏ qua acc {i % acc_count + 1} do thiếu token hoặc channel_id")
+            bots[i % acc_count].sendMessage(str(acc["channel_id"]), "k!d")
+            print(f"[{acc['channel_id']}] → Gửi lệnh k!d từ acc thứ {i % acc_count + 1}")
         except Exception as e:
             print(f"[{acc['channel_id']}] → Drop lỗi: {e}")
         i += 1
         time.sleep(305)
 
-if __name__ == "__main__":
-    keep_alive()
-    for i, acc in enumerate(accounts):
-        emoji = fixed_emojis[i % len(fixed_emojis)]
-        if acc["token"] and acc["channel_id"]:
-            create_bot(acc, emoji)
-        else:
-            print(f"Bỏ qua acc {i + 1} do thiếu token hoặc channel_id")
+keep_alive()
 
-    threading.Thread(target=drop_loop, daemon=True).start()
+for i, acc in enumerate(accounts):
+    emoji = fixed_emojis[i % len(fixed_emojis)]
+    create_bot(acc, emoji)
 
-    while True:
-        time.sleep(60)
+threading.Thread(target=drop_loop, daemon=True).start()
+
+while True:
+    time.sleep(60)
