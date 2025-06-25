@@ -68,7 +68,7 @@ def drop_loop():
 keep_alive()
 
 # Gán thời gian grab cho từng acc
-grab_times = [2, 2.5, 3, 2, 2.5, 3]
+grab_times = [1.3, 2.3, 3, 1.3, 2.3, 3]
 
 for i, acc in enumerate(accounts):
     emoji = fixed_emojis[i % len(fixed_emojis)]
