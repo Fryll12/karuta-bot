@@ -39,7 +39,7 @@ def create_bot(account, emoji):
             content = msg.get("content", "")
             if author == karuta_id and "is dropping 3 cards!" in content:
                 if msg.get("channel_id") == str(account["channel_id"]):
-                    time.sleep(2.4)
+                    time.sleep(3)
                     bot.addReaction(msg["channel_id"], msg["id"], emoji)
                     print(f"[{account['channel_id']}] → Thả reaction {emoji}")
                     try:
