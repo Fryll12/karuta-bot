@@ -1,3 +1,4 @@
+
 import discum
 import threading
 import time
@@ -14,12 +15,12 @@ accounts = [
 ]
 
 karuta_id = "646937666251915264"
-ktb_channel_id = "1376777071279214662"  # Kênh riêng để nhắn "kt b"
+ktb_channel_id = "1376777071279214662"
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
 bots = []
 
-def create_bot(account, emoji):
+def create_bot(account, emoji, grab_time):
     bot = discum.Client(token=account["token"], log=False)
 
     @bot.gateway.command
@@ -39,7 +40,7 @@ def create_bot(account, emoji):
             content = msg.get("content", "")
             if author == karuta_id and "is dropping 3 cards!" in content:
                 if msg.get("channel_id") == str(account["channel_id"]):
-                    time.sleep(3)
+                    time.sleep(grab_time)
                     bot.addReaction(msg["channel_id"], msg["id"], emoji)
                     print(f"[{account['channel_id']}] → Thả reaction {emoji}")
                     try:
@@ -66,9 +67,13 @@ def drop_loop():
 
 keep_alive()
 
+# Gán thời gian grab cho từng acc
+grab_times = [2, 2.5, 3, 2, 2.5, 3]
+
 for i, acc in enumerate(accounts):
     emoji = fixed_emojis[i % len(fixed_emojis)]
-    create_bot(acc, emoji)
+    grab_time = grab_times[i]
+    create_bot(acc, emoji, grab_time)
 
 threading.Thread(target=drop_loop, daemon=True).start()
 
