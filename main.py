@@ -1,4 +1,3 @@
-
 import discum
 import threading
 import time
@@ -25,12 +24,9 @@ def create_bot(account, emoji, grab_time):
 
     @bot.gateway.command
     def on_ready(resp):
-        if resp.event.ready:
-            try:
-                user_id = resp.raw["user"]["id"]
-                print(f"[{account['channel_id']}] → Đăng nhập với user_id: {user_id}")
-            except Exception as e:
-                print(f"Lỗi lấy user_id từ ready: {e}")
+        if resp.event.ready_supplemental:
+            user = bot.gateway.session.user
+            print(f"[{account['channel_id']}] → Đăng nhập với user_id: {user['id']}")
 
     @bot.gateway.command
     def on_message(resp):
