@@ -39,17 +39,32 @@ def create_bot(account, emoji, grab_time):
             content = msg.get("content", "")
             if author == karuta_id and "is dropping 3 cards!" in content:
                 if msg.get("channel_id") == str(account["channel_id"]):
-                    time.sleep(grab_time)
-                    bot.addReaction(msg["channel_id"], msg["id"], emoji)
-                    print(f"[{account['channel_id']}] → Thả reaction {emoji}")
-                    try:
-                        bot.sendMessage(ktb_channel_id, "kt b")
-                        print(f"[{account['channel_id']}] → Nhắn 'kt b' ở kênh riêng")
-                    except Exception as e:
-                        print(f"[{account['channel_id']}] → Lỗi nhắn kt b: {e}")
+                    threading.Thread(target=react_and_message, args=(bot, msg, emoji, grab_time, account)).start()
 
     bots.append(bot)
-    threading.Thread(target=bot.gateway.run, daemon=True).start()
+    threading.Thread(target=run_bot, args=(bot, account), daemon=True).start()
+
+def react_and_message(bot, msg, emoji, grab_time, account):
+    time.sleep(grab_time)
+    try:
+        bot.addReaction(msg["channel_id"], msg["id"], emoji)
+        print(f"[{account['channel_id']}] → Thả reaction {emoji}")
+    except Exception as e:
+        print(f"[{account['channel_id']}] → Lỗi thả reaction: {e}")
+
+    try:
+        bot.sendMessage(ktb_channel_id, "kt b")
+        print(f"[{account['channel_id']}] → Nhắn 'kt b' ở kênh riêng")
+    except Exception as e:
+        print(f"[{account['channel_id']}] → Lỗi nhắn kt b: {e}")
+
+def run_bot(bot, account):
+    while True:
+        try:
+            bot.gateway.run(auto_reconnect=True)
+        except Exception as e:
+            print(f"[{account['channel_id']}] → Bot lỗi, thử kết nối lại: {e}")
+        time.sleep(5)
 
 def drop_loop():
     acc_count = len(accounts)
