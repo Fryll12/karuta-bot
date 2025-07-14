@@ -14,7 +14,7 @@ accounts = [
 ]
 
 karuta_id = "646937666251915264"
-ktb_channel_id = "1376777071279214662"
+ktb_channel_id = os.getenv("KTB_CHANNEL_ID")
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
 bots = []
