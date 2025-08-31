@@ -15,12 +15,22 @@ karuta_id = "646937666251915264"
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 grab_times = [1.3, 2.3, 3.2, 1.3, 2.3, 3.2]
 
-# Tokens từ environment
-all_tokens = []
-for i in range(1, 31):  # Hỗ trợ tối đa 30 acc
-    token = os.getenv(f"TOKEN{i}")
-    if token:
-        all_tokens.append(token)
+# Tokens và tên từ environment
+all_tokens_str = os.getenv("TOKENS")
+bot_names_str = os.getenv("BOT_NAMES")
+
+if all_tokens_str:
+    all_tokens = [token.strip() for token in all_tokens_str.split(",") if token.strip()]
+else:
+    all_tokens = []
+
+if bot_names_str:
+    bot_names = [name.strip() for name in bot_names_str.split(",") if name.strip()]
+    # Đảm bảo số lượng tên = số lượng tokens
+    while len(bot_names) < len(all_tokens):
+        bot_names.append(f"ACC {len(bot_names) + 1}")
+else:
+    bot_names = [f"ACC {i + 1}" for i in range(len(all_tokens))]
 
 # === BIẾN TRẠNG THÁI ===
 groups = {}  # {'Group A': [0, 1, 2, 3, 4, 5]}
@@ -288,7 +298,7 @@ HTML_TEMPLATE = """
                 <div class="account-grid">
                     {% for i in range(total_count) %}
                     <div class="account-slot" data-index="{{ i }}">
-                        ACC {{ i + 1 }}
+                        {{ bot_names[i] }}
                         {% if i in used_accounts %}
                         <br><small>(Used)</small>
                         {% endif %}
@@ -306,7 +316,7 @@ HTML_TEMPLATE = """
                     </div>
                     <div class="account-grid">
                         {% for acc_index in accounts %}
-                        <div class="account-slot selected">ACC {{ acc_index + 1 }}</div>
+                        <div class="account-slot selected">{{ bot_names[acc_index] }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -460,7 +470,8 @@ def index():
         farms=farms,
         total_count=len(all_tokens),
         available_count=len(all_tokens) - len(used_accounts),
-        used_accounts=used_accounts
+        used_accounts=used_accounts,
+        bot_names=bot_names
     )
 
 # === API ROUTES ===
