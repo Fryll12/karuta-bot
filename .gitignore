@@ -1,3 +1,14 @@
+# File chứa các biến môi trường và thông tin nhạy cảm
 .env
+
+# Thư mục cache của Python
 __pycache__/
-*.pyc
+
+# Các thư mục môi trường ảo (virtual environment)
+venv/
+.venv/
+env/
+
+# Cài đặt của các trình soạn thảo code
+.vscode/
+.idea/

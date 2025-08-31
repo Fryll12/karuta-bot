@@ -14,7 +14,7 @@ accounts = [
 ]
 
 karuta_id = "646937666251915264"
-ktb_channel_id = "1376777071279214662"
+ktb_channel_id = os.getenv("KTB_CHANNEL_ID")
 fixed_emojis = ["1️⃣", "2️⃣", "3️⃣", "1️⃣", "2️⃣", "3️⃣"]
 
 bots = []
@@ -51,7 +51,7 @@ def react_and_message(bot, msg, emoji, grab_time, account):
         print(f"[{account['channel_id']}] → Thả reaction {emoji}")
     except Exception as e:
         print(f"[{account['channel_id']}] → Lỗi thả reaction: {e}")
-
+        time.sleep(2)
     try:
         bot.sendMessage(ktb_channel_id, "kt b")
         print(f"[{account['channel_id']}] → Nhắn 'kt b' ở kênh riêng")
